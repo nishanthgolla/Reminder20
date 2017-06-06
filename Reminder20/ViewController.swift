@@ -14,6 +14,7 @@ class ViewController: UIViewController, UICollectionViewDelegate,UICollectionVie
     var cell:MyCollectionViewCell!
     
     var mydfe:IndexPath?
+    var rember:Bool = false
     
     var myString: [String] = ["20 Minutes","40 Minutes","60 Minutes","80 Minutes","100 Minutes","120 Minutes"]
 
@@ -36,35 +37,57 @@ class ViewController: UIViewController, UICollectionViewDelegate,UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          cell = collectionView.dequeueReusableCell(withReuseIdentifier: "timeCell", for: indexPath) as! MyCollectionViewCell
         
-        
+        print("\(indexPath.item)")
         cell.timeLabel.text = myString[indexPath.item]
         cell.timeLabel.textColor = UIColor.gray
         
             return cell
     }
     
-    var rember:Bool = false
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (rember == false){
-            cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
-            cell.timeLabel.textColor = UIColor.red
-            rember = true
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
+        cell.timeLabel.textColor = UIColor.green
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+            if(rember){
+            if (collectionView.cellForItem(at: mydfe!) as? MyCollectionViewCell) != nil{
+                cell = collectionView.cellForItem(at: mydfe!) as! MyCollectionViewCell
+                cell.timeLabel.textColor = UIColor.gray
+            }
+            else{
+                print("not found\(String(describing: mydfe?.item))")
+                }
             mydfe = indexPath
         }
         else{
-            
-            if (collectionView.cellForItem(at: mydfe!) as? MyCollectionViewCell) != nil{
-            cell = collectionView.cellForItem(at: mydfe!) as! MyCollectionViewCell
-            cell.timeLabel.textColor = UIColor.gray
-            }
-            cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
-            cell.timeLabel.textColor = UIColor.red
-            mydfe = indexPath
+            rember = true
+            mydfe=indexPath
         }
-       
         
-        print("\(indexPath.item)")
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if (rember == false){
+//            cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
+//            cell.timeLabel.textColor = UIColor.red
+//            rember = true
+//            mydfe = indexPath
+//        }
+//        else{
+//            
+//            if (collectionView.cellForItem(at: mydfe!) as? MyCollectionViewCell) != nil{
+//            cell = collectionView.cellForItem(at: mydfe!) as! MyCollectionViewCell
+//            cell.timeLabel.textColor = UIColor.gray
+//            }
+//            cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
+//            cell.timeLabel.textColor = UIColor.red
+//            mydfe = indexPath
+//        }
+//       
+//        
+//        print("\(indexPath.item)")
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
